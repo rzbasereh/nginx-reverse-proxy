@@ -1,0 +1,33 @@
+version: '3.4'
+services:
+  baloot:
+    container_name: baloot_service
+    image: localhost:5000/baloot-nginx:SANPSHOT-0.0.1
+    build: ./baloot
+    expose:
+      - 80
+    networks:
+      - baloot-network
+
+  search:
+    container_name: search_service
+    image: localhost:5000/search-nginx:SANPSHOT-0.0.1
+    build: ./search
+    expose:
+      - 80
+    networks:
+      - search-network
+
+  reverseproxy:
+    container_name: reverseproxy
+    image: localhost:5000/reverseproxy-nginx:SANPSHOT-0.0.1
+    build: ./reverseproxy
+    ports:
+      - 9000:80
+    networks:
+      - baloot-network
+      - search-network
+
+networks:
+  baloot-network:
+  search-network:
